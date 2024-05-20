@@ -126,8 +126,8 @@ public class ProductsPage extends BasicFunctionsUtils {
 		String actualMessageDiscription = getText(productPageLocators.messageDiscription);
 		String expectedMessageTitle = "Create Product";
 		String expectedMessageDiscription = "Product created successfully";
-		Assert.assertEquals(actualMessageTitle, expectedMessageTitle,"Popup Message is incorrect");
-		Assert.assertEquals(actualMessageDiscription, expectedMessageDiscription,"Popup Message is incorrect");
+		Assert.assertEquals(actualMessageTitle, expectedMessageTitle, "Popup Message is incorrect");
+		Assert.assertEquals(actualMessageDiscription, expectedMessageDiscription, "Popup Message is incorrect");
 	}
 
 	public void validateUpdatedProductMessage() {
@@ -136,31 +136,35 @@ public class ProductsPage extends BasicFunctionsUtils {
 		String actualMessageDiscription = getText(productPageLocators.messageDiscription);
 		String expectedMessageTitle = "Update Product";
 		String expectedMessageDiscription = "Product updated successfully";
-		Assert.assertEquals(actualMessageTitle, expectedMessageTitle,"Popup Message is incorrect");
-		Assert.assertEquals(actualMessageDiscription, expectedMessageDiscription,"Popup Message is incorrect");
+		Assert.assertEquals(actualMessageTitle, expectedMessageTitle, "Popup Message is incorrect");
+		Assert.assertEquals(actualMessageDiscription, expectedMessageDiscription, "Popup Message is incorrect");
 	}
 
 	public void readProductDetailsInTable(String productName) {
 		List<WebElement> tableDataForProduct = driver
 				.findElements(By.xpath("//a[text()='" + productDetails.get(productName) + "']/ancestor::tr/td"));
 		for (int i = 0; i < productPageLocators.tableTitle.size(); i++) {
-			
+
 			String data = tableDataForProduct.get(i).getText();
-			if(data  != null) {
-				if(!(data.isEmpty()|| data.isBlank())) {
-			displayProductDetailsInUI.put(productPageLocators.tableTitle.get(i).getText(),
-					tableDataForProduct.get(i).getText());
-		}}}
+			if (data != null) {
+				if (!(data.isEmpty() || data.isBlank())) {
+					displayProductDetailsInUI.put(productPageLocators.tableTitle.get(i).getText(),
+							tableDataForProduct.get(i).getText());
+				}
+			}
+		}
 	}
 
 	public void readProductDetailsInProfilePage() {
 		for (int i = 0; i < productPageLocators.profileDetailsLabel.size(); i++) {
 			String data = productPageLocators.profileDetailsValues.get(i).getText();
-			if(data  != null) {
-				if(!(data.isEmpty()|| data.isBlank())) {
-			displayProductProfileDetails.put(productPageLocators.profileDetailsLabel.get(i).getText(),
-					productPageLocators.profileDetailsValues.get(i).getText());
-		}}}
+			if (data != null) {
+				if (!(data.isEmpty() || data.isBlank())) {
+					displayProductProfileDetails.put(productPageLocators.profileDetailsLabel.get(i).getText(),
+							productPageLocators.profileDetailsValues.get(i).getText());
+				}
+			}
+		}
 	}
 
 	public void validateProductDetailsDisplayInTable(String productName) {
@@ -177,14 +181,13 @@ public class ProductsPage extends BasicFunctionsUtils {
 		sa.assertAll();
 
 	}
-	
 
 	public boolean isEqual(String actual, String expected) {
 		return actual.equalsIgnoreCase(expected);
 	}
-	
+
 	public void setExpectedMapForCompare(Map map) {
-		expectedMap =map;
+		expectedMap = map;
 		sa = new SoftAssert();
 	}
 
@@ -208,7 +211,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 		updateIfDataPresent(productPageLocators.collection, productDetails.get("EditSeason"));
 		updateIfDataPresent(productPageLocators.remark, productDetails.get("EditRemarks"));
 		updateIfDataPresent(productPageLocators.tags, productDetails.get("EditTags"));
-	
+
 	}
 
 	public void validateUpdatedDetails() {
@@ -221,9 +224,5 @@ public class ProductsPage extends BasicFunctionsUtils {
 		compareMapValues("EditRemarks", "Remarks", "for Remarks");
 		compareMapValues("EditTags", "Tags", "for Tags");
 		sa.assertAll();
-	}
-
-	public void test() {
-		System.out.println("hi");
 	}
 }
