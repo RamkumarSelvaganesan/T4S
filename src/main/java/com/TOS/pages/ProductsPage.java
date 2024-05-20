@@ -224,6 +224,6 @@ public class ProductsPage extends BasicFunctionsUtils {
 	}
 
 	public void test() {
-		
+		System.out.println("hi");
 	}
 }
