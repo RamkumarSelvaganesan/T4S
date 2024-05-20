@@ -223,4 +223,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 		sa.assertAll();
 	}
 
+	public void test() {
+		
+	}
 }
