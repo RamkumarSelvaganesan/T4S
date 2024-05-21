@@ -12,6 +12,9 @@ public class ProductPageLocators {
 	@FindBy(xpath = "//button//span[text()='Add Product']")
 	public WebElement addProductButton;
 
+	@FindBy(xpath = "//button//span[text()='Import']")
+	public WebElement importButton;
+
 	@FindBy(id = "onBehalfOf")
 	public WebElement onBehalfOf;
 
@@ -71,7 +74,7 @@ public class ProductPageLocators {
 
 	@FindBy(id = "collection")
 	public WebElement collection;
-	
+
 	@FindBy(id = "remark")
 	public WebElement remark;
 
@@ -82,7 +85,7 @@ public class ProductPageLocators {
 	public WebElement imageUpload;
 
 	@FindBy(xpath = "//span[@role='button']//input[@type='file']")
-	public WebElement imageUploadinput;
+	public WebElement uploadButton;
 
 	@FindBy(xpath = "//span[contains(@class,'ant-input-group')]//input")
 	public WebElement searchProduct;
@@ -98,23 +101,26 @@ public class ProductPageLocators {
 
 	@FindBy(css = "thead.ant-table-thead th")
 	public List<WebElement> tableTitle;
-	
+
 	public ProductPageLocators(WebDriver driver) {
-		this.driver =driver;
+		this.driver = driver;
 	}
 
 	public WebElement getProductHyperLine(String productName) {
 		return driver.findElement(By.linkText(productName));
 	}
-	
+
 	public WebElement getProductProfileButton(String buttonName) {
-		return driver.findElement(By.xpath("//span[text()='"+buttonName+"']"));
+		return driver.findElement(By.xpath("//span[text()='" + buttonName + "']"));
 	}
-	
+
 	@FindBy(xpath = "//table//span[@class='ant-descriptions-item-content']/..//span[@class='ant-descriptions-item-label']")
 	public List<WebElement> profileDetailsLabel;
-	
+
 	@FindBy(xpath = "//table//span[@class='ant-descriptions-item-content']")
 	public List<WebElement> profileDetailsValues;
+
+	@FindBy(xpath = "//a[@download='products_template.xlsx']")
+	public WebElement downloadTemplateButton;
 
 }

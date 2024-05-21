@@ -13,6 +13,7 @@ import org.testng.asserts.SoftAssert;
 
 import com.TOS.page.locators.ProductPageLocators;
 import com.TOS.utils.BasicFunctionsUtils;
+import com.TOS.utils.DriverManager;
 import com.TOS.utils.ExcelDataReader;
 
 public class ProductsPage extends BasicFunctionsUtils {
@@ -22,7 +23,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 	Map<String, String> productDetails;
 	Map<String, String> displayProductDetailsInUI;
 	Map<String, String> displayProductProfileDetails;
-	Map expectedMap;
+	Map<String, String> expectedMap;
 	SoftAssert sa;
 
 	public ProductsPage(WebDriver driver) {
@@ -50,6 +51,18 @@ public class ProductsPage extends BasicFunctionsUtils {
 		click(productPageLocators.addProductButton);
 	}
 
+	public void clickOnImportIcon() {
+		click(productPageLocators.importButton);
+	}
+
+	public void clickOnDownloadTemplate() {
+		click(productPageLocators.downloadTemplateButton);
+	}
+
+	public void clearDownloadFolder() {
+		deleteFolder(DriverManager.downloadFolder);
+	}
+
 	public void selectOnBehalfOf(String behalfName) {
 		if (productDetails.get(behalfName) != null) {
 			type(productPageLocators.onBehalfOf, productDetails.get(behalfName));
@@ -63,6 +76,10 @@ public class ProductsPage extends BasicFunctionsUtils {
 				&& (isElementVisible(productPageLocators.productName)))) {
 			click(productPageLocators.nextButton);
 		}
+	}
+
+	public void clickOnNextButton() {
+		click(productPageLocators.nextButton);
 	}
 
 	public void fillRequiredFields() {
@@ -90,9 +107,8 @@ public class ProductsPage extends BasicFunctionsUtils {
 		typeIfDataPresent(productPageLocators.collection, productDetails.get("Collection"));
 	}
 
-	public void uploadImage() {
-		String imageLocation = System.getProperty("user.dir") + "/src/test/resources/TestData/Image-1.png";
-		upload(productPageLocators.imageUploadinput, imageLocation);
+	public void upload(String fileLocation) {
+		upload(productPageLocators.uploadButton, fileLocation);
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -120,24 +136,14 @@ public class ProductsPage extends BasicFunctionsUtils {
 		}
 	}
 
-	public void validateAddedProductMessage() {
+	public void validatePOPMessage(String expectedMessageTitle, String expectedMessageDiscription) {
 		waitUntilElementVisiable(productPageLocators.messageTitle);
 		String actualMessageTitle = getText(productPageLocators.messageTitle);
 		String actualMessageDiscription = getText(productPageLocators.messageDiscription);
-		String expectedMessageTitle = "Create Product";
-		String expectedMessageDiscription = "Product created successfully";
-		Assert.assertEquals(actualMessageTitle, expectedMessageTitle, "Popup Message is incorrect");
-		Assert.assertEquals(actualMessageDiscription, expectedMessageDiscription, "Popup Message is incorrect");
-	}
-
-	public void validateUpdatedProductMessage() {
-		waitUntilElementVisiable(productPageLocators.messageTitle);
-		String actualMessageTitle = getText(productPageLocators.messageTitle);
-		String actualMessageDiscription = getText(productPageLocators.messageDiscription);
-		String expectedMessageTitle = "Update Product";
-		String expectedMessageDiscription = "Product updated successfully";
-		Assert.assertEquals(actualMessageTitle, expectedMessageTitle, "Popup Message is incorrect");
-		Assert.assertEquals(actualMessageDiscription, expectedMessageDiscription, "Popup Message is incorrect");
+		sa = new SoftAssert();
+		sa.assertEquals(actualMessageTitle, expectedMessageTitle, "Popup Message is incorrect");
+		sa.assertEquals(actualMessageDiscription, expectedMessageDiscription, "Popup Message is incorrect");
+		sa.assertAll();
 	}
 
 	public void readProductDetailsInTable(String productName) {
@@ -186,7 +192,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 		return actual.equalsIgnoreCase(expected);
 	}
 
-	public void setExpectedMapForCompare(Map map) {
+	public void setExpectedMapForCompare(Map<String, String> map) {
 		expectedMap = map;
 		sa = new SoftAssert();
 	}
@@ -224,5 +230,10 @@ public class ProductsPage extends BasicFunctionsUtils {
 		compareMapValues("EditRemarks", "Remarks", "for Remarks");
 		compareMapValues("EditTags", "Tags", "for Tags");
 		sa.assertAll();
+	}
+
+	public void verifyFileInDownloads(String filePath) {
+		Assert.assertTrue(isFileInFolder(DriverManager.downloadFolder, filePath),
+				" Downloaded File:" + filePath + " is not present in the Downloads folder");
 	}
 }
