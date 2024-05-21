@@ -1,7 +1,10 @@
 package com.TOS.utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -49,11 +52,10 @@ public class BasicFunctionsUtils {
 	}
 
 	public void click(WebElement element) {
-		//waitUntilElementToBeClicked(element);
+		// waitUntilElementToBeClicked(element);
 		element.click();
 		waitUntilLoadComplete();
 	}
-	
 
 	public void type(WebElement element, String value) {
 		waitUntilElementToBeClicked(element);
@@ -82,13 +84,13 @@ public class BasicFunctionsUtils {
 	public void updateIfDataPresent(WebElement element, String value) {
 		if (value != null) {
 			waitUntilElementToBeClicked(element);
-			clearText(element,25);
+			clearText(element, 25);
 			waitUntilLoadComplete();
 			element.sendKeys(value);
 			waitUntilLoadComplete();
 		}
 	}
-	
+
 	public void pressEnter(WebElement element) {
 		element.sendKeys(Keys.ENTER);
 		waitUntilLoadComplete();
@@ -120,10 +122,41 @@ public class BasicFunctionsUtils {
 			}
 		}
 	}
-	
-	public void clearText(WebElement element,int num) {
-		for(int i=0;i<num; i++) {
+
+	public void clearText(WebElement element, int num) {
+		for (int i = 0; i < num; i++) {
 			element.sendKeys(Keys.BACK_SPACE);
+		}
+	}
+
+	public void deleteFolder(String folderPath) {
+		File folder = new File(folderPath);
+		try {
+			FileUtils.cleanDirectory(folder);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static boolean isFileInFolder(String folderPath, String fileName) {
+		if (folderPath == null || fileName == null) {
+			throw new IllegalArgumentException("Folder path or file name cannot be null.");
+		}
+
+		// Create a File object for the folder
+		File folder = new File(folderPath);
+
+		// Check if the folder exists and is a directory
+		if (folder.exists() && folder.isDirectory()) {
+			// Create a File object for the file
+			File file = new File(folder, fileName);
+
+			// Check if the file exists and is indeed a file
+			return file.exists() && file.isFile();
+		} else {
+			System.out.println("The specified folder does not exist or is not a directory.");
+			return false;
 		}
 	}
 

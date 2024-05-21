@@ -9,7 +9,7 @@ Feature: Product Categories
 	And Get product details from "<TestCaseNo>"
 	And user selects "OnBehalfOf"
 	And user fills details of Product Category
-	#And user uploads the image file
+	#And user uploads the "image" file
 	And user clicks on the submit button
 	And verify the added product message should display
 	And search for product name "ProductName"
@@ -36,4 +36,15 @@ Feature: Product Categories
 	Examples:
 	| TestCaseNo |
 	| TC2 |
+	
+	@new
+	Scenario: Verify the user can add a product by adding the template
+	When user clicks on "Products" Tab
+	And user clicks on "Import" icon
+	And user clicks on Download Template button
+	And verify file "products_template.xlsx" present in downloads.
+	And user proceeds to next step to upload the file
+	And user uploads the "products_template.xlsx" file
+	And user clicks on the submit button
+	Then the product should be added successfully message display
 		
