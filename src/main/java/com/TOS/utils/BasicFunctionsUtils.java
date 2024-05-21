@@ -134,7 +134,6 @@ public class BasicFunctionsUtils {
 		try {
 			FileUtils.cleanDirectory(folder);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
