@@ -1,6 +1,7 @@
 package com.TOS.Stepdefinition.Products;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 
@@ -20,6 +21,8 @@ public class ProductSteps {
 			productPage.clickOnAddProductPlusIcon();
 		} else if (icon.equalsIgnoreCase("Import")) {
 			productPage.clickOnImportIcon();
+		} else {
+			productPage.clickOnIcon(icon);
 		}
 	}
 
@@ -55,6 +58,11 @@ public class ProductSteps {
 	@When("user clicks on the submit button")
 	public void user_clicks_on_the_submit_button_to_add_the_product() {
 		productPage.submitProductDetails();
+	}
+
+	@When("user clicks on the clear button")
+	public void user_clicks_on_the_clear_button() {
+		productPage.clickOnClearButton();
 	}
 
 	@When("search for product name {string}")
@@ -123,6 +131,26 @@ public class ProductSteps {
 	@Then("the product should be added successfully message display")
 	public void the_product_should_be_added_successfully() {
 		productPage.validatePOPMessage("Need to add Title", "Need to add discription");
+	}
+
+	@When("user selects FilterType as {string} with condition {string} and value {string}")
+	public void user_selects_the_as_with_condition_and_value(String filterType, String filterCondition,
+			String filterValue) {
+		productPage.enterFilterType(filterType);
+		productPage.enterFilterCondition(filterCondition);
+		productPage.enterFilterValue(filterValue);
+	}
+
+	@Then("validate the Product details table {string} column has a value {string}")
+	public void validate_the_product_details_table_column_has_a_value(String columnName, String expectedValue)
+			throws Exception {
+		ArrayList<String> displayData = productPage.readProductDetailsForColumn(columnName);
+		if (displayData.size() == 0) {
+			throw new Exception("\"" + expectedValue + "\" is not matched with any result in the \'" + columnName
+					+ "\". please update the search value");
+		}
+		productPage.isContainValues(displayData, expectedValue);
+
 	}
 
 }

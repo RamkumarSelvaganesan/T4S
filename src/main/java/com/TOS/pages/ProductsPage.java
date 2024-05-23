@@ -1,5 +1,6 @@
 package com.TOS.pages;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 	Map<String, String> displayProductDetailsInUI;
 	Map<String, String> displayProductProfileDetails;
 	Map<String, String> expectedMap;
+	Map<String, Integer> tableHeaderWithIndex;
 	SoftAssert sa;
 
 	public ProductsPage(WebDriver driver) {
@@ -34,6 +36,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 		productDetails = new HashMap<>();
 		displayProductDetailsInUI = new HashMap<>();
 		displayProductProfileDetails = new HashMap<>();
+		tableHeaderWithIndex = new HashMap<>();
 	}
 
 	// new code
@@ -61,6 +64,10 @@ public class ProductsPage extends BasicFunctionsUtils {
 
 	public void clearDownloadFolder() {
 		deleteFolder(DriverManager.downloadFolder);
+	}
+
+	public void clickOnIcon(String iconName) {
+		click(productPageLocators.getProductProfileButton(iconName));
 	}
 
 	public void selectOnBehalfOf(String behalfName) {
@@ -122,6 +129,10 @@ public class ProductsPage extends BasicFunctionsUtils {
 		click(productPageLocators.submitButton);
 	}
 
+	public void clickOnClearButton() {
+		click(productPageLocators.clearButton);
+	}
+
 	public void searchProduct(String productName) {
 		type(productPageLocators.searchProduct, productDetails.get(productName));
 	}
@@ -162,6 +173,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 	}
 
 	public void readProductDetailsInProfilePage() {
+
 		for (int i = 0; i < productPageLocators.profileDetailsLabel.size(); i++) {
 			String data = productPageLocators.profileDetailsValues.get(i).getText();
 			if (data != null) {
@@ -170,6 +182,22 @@ public class ProductsPage extends BasicFunctionsUtils {
 							productPageLocators.profileDetailsValues.get(i).getText());
 				}
 			}
+		}
+	}
+
+	public ArrayList<String> readProductDetailsForColumn(String columnName) {
+		readTableHeaderDetails();
+		ArrayList<String> columnData = new ArrayList<String>();
+		List<WebElement> allValues = productPageLocators.getAllTableCellValue(tableHeaderWithIndex.get(columnName));
+		for (WebElement value : allValues) {
+			columnData.add(value.getText());
+		}
+		return columnData;
+	}
+
+	public void readTableHeaderDetails() {
+		for (int i = 0; i < productPageLocators.tableTitle.size(); i++) {
+			tableHeaderWithIndex.put(productPageLocators.tableTitle.get(i).getText(), i + 1);
 		}
 	}
 
@@ -235,5 +263,28 @@ public class ProductsPage extends BasicFunctionsUtils {
 	public void verifyFileInDownloads(String filePath) {
 		Assert.assertTrue(isFileInFolder(DriverManager.downloadFolder, filePath),
 				" Downloaded File:" + filePath + " is not present in the Downloads folder");
+	}
+
+	public void enterFilterType(String filterName) {
+		click(productPageLocators.filterBy);
+		click(productPageLocators.getFilterOption(filterName));
+	}
+
+	public void enterFilterCondition(String filterCondition) {
+		click(productPageLocators.filterCondition);
+		click(productPageLocators.getFilterOption(filterCondition));
+	}
+
+	public void enterFilterValue(String filterValue) {
+		type(productPageLocators.filterValue, filterValue);
+	}
+
+	public void isContainValues(ArrayList<String> inputs, String expectedValue) {
+		sa = new SoftAssert();
+		for (String input : inputs) {
+			Assert.assertTrue(input.contains(expectedValue),
+					expectedValue + " is not present in the  filtered results: " + inputs);
+		}
+		sa.assertAll();
 	}
 }

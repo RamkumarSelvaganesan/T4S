@@ -14,7 +14,7 @@ Feature: Product Categories
 	And verify the added product message should display
 	And search for product name "ProductName"
 	And search for company "OnBehalfOf"
-	#Then verify added "ProductName" should display in the product table with proper details
+	Then verify added "ProductName" should display in the product table with proper details
 
 	Examples:
 	| TestCaseNo |
@@ -47,4 +47,18 @@ Feature: Product Categories
 	And user uploads the "products_template.xlsx" file
 	And user clicks on the submit button
 	Then the product should be added successfully message display
+	
+	@new
+	Scenario: Verify the user can check the Product details based on Filter type
+  When user clicks on "Products" Tab
+  And user clicks on "Filters" icon
+  And user selects FilterType as "Product Name" with condition "Contains" and value "TestProduct4"
+  And user clicks on the submit button
+  Then validate the Product details table "Product Name" column has a value "TestProduct4"
+  And user clicks on the clear button
+  And user selects FilterType as "Active" with condition "Contains" and value "Active"
+  And user clicks on the submit button
+  Then validate the Product details table "Active" column has a value "Active"
+  
+	
 		
