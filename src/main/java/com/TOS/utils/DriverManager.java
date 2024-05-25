@@ -27,7 +27,10 @@ public class DriverManager {
 
 			switch (BrowserList.valueOf(browser.toUpperCase())) {
 			case CHROME:
-				driver = new ChromeDriver(setupChromeOptions());
+				System.setProperty("webdriver.chrome.driver", "C:\\Users\\v-NandaniNisha\\Selenium\\chromedriver.exe");
+				ChromeOptions options = new ChromeOptions();
+				options.addArguments("--remote-allow-origins=*");
+				driver = new ChromeDriver(options);
 				break;
 			case FIREFOX:
 				driver = new FirefoxDriver(setupFirefoxOptions());
