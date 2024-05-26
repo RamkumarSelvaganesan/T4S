@@ -1,10 +1,12 @@
 package com.TOS.Stepdefinition.Products;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 
 import com.TOS.pages.ProductsPage;
+import com.TOS.utils.BasicFunctionsUtils;
 import com.TOS.utils.DriverManager;
 
 import io.cucumber.java.en.Then;
@@ -20,6 +22,8 @@ public class ProductSteps {
 			productPage.clickOnAddProductPlusIcon();
 		} else if (icon.equalsIgnoreCase("Import")) {
 			productPage.clickOnImportIcon();
+		} else {
+			productPage.clickOnIcon(icon);
 		}
 	}
 
@@ -42,14 +46,7 @@ public class ProductSteps {
 
 	@When("user uploads the {string} file")
 	public void user_uploads_the_file(String fileType) {
-		String uploadFileLocation = null;
-		if (fileType.equalsIgnoreCase("Image")) {
-			uploadFileLocation = System.getProperty("user.dir") + "/src/test/resources/TestData/Image-1.png";
-		} else if (fileType.contains(".xlsx")) {
-			uploadFileLocation = System.getProperty("user.dir") + File.separator + "Downloads" + File.separator
-					+ fileType;
-		}
-		productPage.upload(uploadFileLocation);
+		productPage.upload(fileType);
 	}
 
 	@When("user clicks on the submit button")
@@ -57,8 +54,14 @@ public class ProductSteps {
 		productPage.submitProductDetails();
 	}
 
+	@When("user clicks on the clear button")
+	public void user_clicks_on_the_clear_button() {
+		productPage.clickOnClearButton();
+	}
+
 	@When("search for product name {string}")
 	public void search_for_product_name(String string) {
+		
 		productPage.searchProduct(string);
 	}
 
@@ -75,6 +78,9 @@ public class ProductSteps {
 	@When("verify added {string} should display in the product table with proper details")
 	public void verify_added_should_display_in_the_product_table_with_proper_details(String productName)
 			throws InterruptedException {
+		if(BasicFunctionsUtils.itemUniqueName!=null) {
+			productName=BasicFunctionsUtils.itemUniqueName;
+		}
 		productPage.validateProductDetailsDisplayInTable(productName);
 
 	}
@@ -123,6 +129,26 @@ public class ProductSteps {
 	@Then("the product should be added successfully message display")
 	public void the_product_should_be_added_successfully() {
 		productPage.validatePOPMessage("Need to add Title", "Need to add discription");
+	}
+
+	@When("user selects FilterType as {string} with condition {string} and value {string}")
+	public void user_selects_the_as_with_condition_and_value(String filterType, String filterCondition,
+			String filterValue) {
+		productPage.enterFilterType(filterType);
+		productPage.enterFilterCondition(filterCondition);
+		productPage.enterFilterValue(filterValue);
+	}
+
+	@Then("validate the Product details table {string} column has a value {string}")
+	public void validate_the_product_details_table_column_has_a_value(String columnName, String expectedValue)
+			throws Exception {
+		ArrayList<String> displayData = productPage.readProductDetailsForColumn(columnName);
+		if (displayData.size() == 0) {
+			throw new Exception("\"" + expectedValue + "\" is not matched with any result in the \'" + columnName
+					+ "\". please update the search value");
+		}
+		productPage.isContainValues(displayData, expectedValue);
+
 	}
 
 }

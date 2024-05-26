@@ -27,6 +27,9 @@ public class ProductPageLocators {
 	@FindBy(xpath = "//button//span[text()='Close']")
 	public WebElement closeButton;
 
+	@FindBy(xpath = "//button//span[text()='Clear']")
+	public WebElement clearButton;
+
 	@FindBy(xpath = "//button//span[text()='Submit']")
 	public WebElement submitButton;
 
@@ -122,5 +125,25 @@ public class ProductPageLocators {
 
 	@FindBy(xpath = "//a[@download='products_template.xlsx']")
 	public WebElement downloadTemplateButton;
+
+	@FindBy(xpath = "//tbody//tr[@data-row-key]//td")
+	public List<WebElement> columnData;
+
+	public List<WebElement> getAllTableCellValue(int columnIndex) {
+		return driver.findElements(By.xpath("//tbody//tr[@data-row-key]//td[" + columnIndex + "]"));
+	}
+
+	@FindBy(id = "column")
+	public WebElement filterBy;
+
+	@FindBy(id = "condition")
+	public WebElement filterCondition;
+
+	@FindBy(id = "value")
+	public WebElement filterValue;
+
+	public WebElement getFilterOption(String optionName) {
+		return driver.findElement(By.xpath("//div[@title='" + optionName + "']"));
+	}
 
 }

@@ -2,7 +2,9 @@ package com.TOS.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.JavascriptExecutor;
@@ -16,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class BasicFunctionsUtils {
 
 	public WebDriver driver;
+	public static String itemUniqueName;
 
 	public BasicFunctionsUtils(WebDriver driver) {
 		this.driver = driver;
@@ -158,5 +161,12 @@ public class BasicFunctionsUtils {
 			return false;
 		}
 	}
+	
+	public void uniqueProductName(String name) {
+        // Generate a unique suffix using the current date and time
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());  
+        // Concatenate the original name with the timestamp
+        itemUniqueName = name + "_" + timestamp;
+    }
 
 }
