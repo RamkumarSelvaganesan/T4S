@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.openqa.selenium.WebDriver;
 
 import com.TOS.pages.ProductsPage;
+import com.TOS.utils.BasicFunctionsUtils;
 import com.TOS.utils.DriverManager;
 
 import io.cucumber.java.en.Then;
@@ -45,14 +46,7 @@ public class ProductSteps {
 
 	@When("user uploads the {string} file")
 	public void user_uploads_the_file(String fileType) {
-		String uploadFileLocation = null;
-		if (fileType.equalsIgnoreCase("Image")) {
-			uploadFileLocation = System.getProperty("user.dir") + "/src/test/resources/TestData/Image-1.png";
-		} else if (fileType.contains(".xlsx")) {
-			uploadFileLocation = System.getProperty("user.dir") + File.separator + "Downloads" + File.separator
-					+ fileType;
-		}
-		productPage.upload(uploadFileLocation);
+		productPage.upload(fileType);
 	}
 
 	@When("user clicks on the submit button")
@@ -67,6 +61,7 @@ public class ProductSteps {
 
 	@When("search for product name {string}")
 	public void search_for_product_name(String string) {
+		
 		productPage.searchProduct(string);
 	}
 
@@ -83,6 +78,9 @@ public class ProductSteps {
 	@When("verify added {string} should display in the product table with proper details")
 	public void verify_added_should_display_in_the_product_table_with_proper_details(String productName)
 			throws InterruptedException {
+		if(BasicFunctionsUtils.itemUniqueName!=null) {
+			productName=BasicFunctionsUtils.itemUniqueName;
+		}
 		productPage.validateProductDetailsDisplayInTable(productName);
 
 	}

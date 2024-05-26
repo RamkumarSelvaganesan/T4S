@@ -1,6 +1,7 @@
 package com.TOS.pages;
 
 import java.util.ArrayList;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,16 +22,18 @@ public class ProductsPage extends BasicFunctionsUtils {
 
 	public WebDriver driver;
 	ProductPageLocators productPageLocators;
-	Map<String, String> productDetails;
+	public static Map<String, String> productDetails;
 	Map<String, String> displayProductDetailsInUI;
 	Map<String, String> displayProductProfileDetails;
 	Map<String, String> expectedMap;
 	Map<String, Integer> tableHeaderWithIndex;
 	SoftAssert sa;
+	public PageObjectManager pageManager;
 
 	public ProductsPage(WebDriver driver) {
 		super(driver);
 		this.driver = driver;
+		pageManager = new PageObjectManager(driver);
 		this.productPageLocators = new ProductPageLocators(driver);
 		PageFactory.initElements(driver, this.productPageLocators);
 		productDetails = new HashMap<>();
@@ -90,7 +93,8 @@ public class ProductsPage extends BasicFunctionsUtils {
 	}
 
 	public void fillRequiredFields() {
-		type(productPageLocators.productName, productDetails.get("ProductName"));
+		uniqueProductName(productDetails.get("ProductName"));
+		type(productPageLocators.productName, itemUniqueName);
 		type(productPageLocators.unitCost, productDetails.get("Cost"));
 		type(productPageLocators.category, productDetails.get("Category"));
 		pressEnter(productPageLocators.category);
@@ -114,8 +118,18 @@ public class ProductsPage extends BasicFunctionsUtils {
 		typeIfDataPresent(productPageLocators.collection, productDetails.get("Collection"));
 	}
 
-	public void upload(String fileLocation) {
-		upload(productPageLocators.uploadButton, fileLocation);
+	public void upload(String fileType) {
+		String uploadFileLocation = null;
+		if (fileType.equalsIgnoreCase("Image")) {
+			uploadFileLocation = System.getProperty("user.dir") + "/src/test/resources/TestData/Image-1.png";
+		} else if (fileType.contains(".xlsx")) {
+			uploadFileLocation = System.getProperty("user.dir") + File.separator + "Downloads" + File.separator
+					+ fileType;
+		}
+		if(productDetails.get("UploadFileLocation")!=null){
+			uploadFileLocation= productDetails.get("UploadFileLocation");
+		}
+		upload(productPageLocators.uploadButton, uploadFileLocation);
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -134,7 +148,12 @@ public class ProductsPage extends BasicFunctionsUtils {
 	}
 
 	public void searchProduct(String productName) {
-		type(productPageLocators.searchProduct, productDetails.get(productName));
+		if(BasicFunctionsUtils.itemUniqueName!=null) {
+			productName = BasicFunctionsUtils.itemUniqueName;
+		}else {
+			productName = productDetails.get(productName);
+		}
+		type(productPageLocators.searchProduct, productName);
 	}
 
 	public void searchForCompany(String companyName) {
@@ -157,9 +176,20 @@ public class ProductsPage extends BasicFunctionsUtils {
 		sa.assertAll();
 	}
 
-	public void readProductDetailsInTable(String productName) {
+	public Map<String, String> readProductDetailsInTable(String productName) {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(BasicFunctionsUtils.itemUniqueName!=null) {
+			productName = BasicFunctionsUtils.itemUniqueName;
+		}else {
+			productName=  productDetails.get(productName);
+		}
 		List<WebElement> tableDataForProduct = driver
-				.findElements(By.xpath("//a[text()='" + productDetails.get(productName) + "']/ancestor::tr/td"));
+				.findElements(By.xpath("//a[text()='" +productName+ "']/ancestor::tr/td"));
 		for (int i = 0; i < productPageLocators.tableTitle.size(); i++) {
 
 			String data = tableDataForProduct.get(i).getText();
@@ -170,6 +200,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 				}
 			}
 		}
+		return displayProductDetailsInUI;
 	}
 
 	public void readProductDetailsInProfilePage() {
@@ -183,6 +214,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 				}
 			}
 		}
+		 
 	}
 
 	public ArrayList<String> readProductDetailsForColumn(String columnName) {
@@ -204,7 +236,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 	public void validateProductDetailsDisplayInTable(String productName) {
 		readProductDetailsInTable(productName);
 		setExpectedMapForCompare(displayProductDetailsInUI);
-		compareMapValues("ProductName", "Product Name", "for Product Name details");
+		compareMapUniqueValues(productName, "Product Name", "for Product Name details");
 		compareMapValues("Active", "Active", "for Active details");
 		compareMapValues("Ref No", "Product Code", "for Product code details");
 		compareMapValues("HSCode", "HS Code", "for HS code details");
@@ -228,6 +260,9 @@ public class ProductsPage extends BasicFunctionsUtils {
 	public void compareMapValues(String testDataKeyName, String uiKeyName, String messageNote) {
 		String testData = productDetails.get(testDataKeyName);
 		sa.assertEquals(testData, expectedMap.get(uiKeyName), messageNote);
+	}
+	public void compareMapUniqueValues(String string, String uiKeyName, String messageNote) {
+		sa.assertEquals(string, expectedMap.get(uiKeyName), messageNote);
 	}
 
 	public void openProductDetails(String productName) {

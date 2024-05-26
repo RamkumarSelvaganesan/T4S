@@ -3,7 +3,7 @@ Feature: Component Categories
   Background: 
     Given the user is on the T0S Application home page
 
-  @Tc10 @new1
+  @Tc10 @new
   Scenario: Verify user can add a component 
     When user clicks on "Components" Tab
     And user clicks on the "Add New" icon

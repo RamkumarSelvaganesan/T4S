@@ -17,6 +17,4 @@ public class DashboardSteps {
 	public void user_clicks_on_tab(String tabName) {
 	    dashboardPage.goToTab(tabName);
 	}
-	
-
 }
