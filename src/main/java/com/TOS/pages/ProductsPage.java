@@ -1,7 +1,7 @@
 package com.TOS.pages;
 
-import java.util.ArrayList;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,8 +126,8 @@ public class ProductsPage extends BasicFunctionsUtils {
 			uploadFileLocation = System.getProperty("user.dir") + File.separator + "Downloads" + File.separator
 					+ fileType;
 		}
-		if(productDetails.get("UploadFileLocation")!=null){
-			uploadFileLocation= productDetails.get("UploadFileLocation");
+		if (productDetails.get("UploadFileLocation") != null) {
+			uploadFileLocation = productDetails.get("UploadFileLocation");
 		}
 		upload(productPageLocators.uploadButton, uploadFileLocation);
 		try {
@@ -148,9 +148,9 @@ public class ProductsPage extends BasicFunctionsUtils {
 	}
 
 	public void searchProduct(String productName) {
-		if(BasicFunctionsUtils.itemUniqueName!=null) {
+		if (BasicFunctionsUtils.itemUniqueName != null) {
 			productName = BasicFunctionsUtils.itemUniqueName;
-		}else {
+		} else {
 			productName = productDetails.get(productName);
 		}
 		type(productPageLocators.searchProduct, productName);
@@ -183,13 +183,13 @@ public class ProductsPage extends BasicFunctionsUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(BasicFunctionsUtils.itemUniqueName!=null) {
+		if (BasicFunctionsUtils.itemUniqueName != null) {
 			productName = BasicFunctionsUtils.itemUniqueName;
-		}else {
-			productName=  productDetails.get(productName);
+		} else {
+			productName = productDetails.get(productName);
 		}
 		List<WebElement> tableDataForProduct = driver
-				.findElements(By.xpath("//a[text()='" +productName+ "']/ancestor::tr/td"));
+				.findElements(By.xpath("//a[text()='" + productName + "']/ancestor::tr/td"));
 		for (int i = 0; i < productPageLocators.tableTitle.size(); i++) {
 
 			String data = tableDataForProduct.get(i).getText();
@@ -214,7 +214,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 				}
 			}
 		}
-		 
+
 	}
 
 	public ArrayList<String> readProductDetailsForColumn(String columnName) {
@@ -261,12 +261,18 @@ public class ProductsPage extends BasicFunctionsUtils {
 		String testData = productDetails.get(testDataKeyName);
 		sa.assertEquals(testData, expectedMap.get(uiKeyName), messageNote);
 	}
+
 	public void compareMapUniqueValues(String string, String uiKeyName, String messageNote) {
 		sa.assertEquals(string, expectedMap.get(uiKeyName), messageNote);
 	}
 
 	public void openProductDetails(String productName) {
-		click(productPageLocators.getProductHyperLine(productDetails.get(productName)));
+		if (BasicFunctionsUtils.itemUniqueName != null) {
+			productName = BasicFunctionsUtils.itemUniqueName;
+		} else {
+			productName = productDetails.get(productName);
+		}
+		click(productPageLocators.getProductHyperLine(productName));
 	}
 
 	public void clickButtonInProductProfile(String buttonName) {
