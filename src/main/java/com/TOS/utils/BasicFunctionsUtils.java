@@ -56,6 +56,7 @@ public class BasicFunctionsUtils {
 
 	public void click(WebElement element) {
 		// waitUntilElementToBeClicked(element);
+		scrollToElement(element);
 		element.click();
 		waitUntilLoadComplete();
 	}
@@ -83,7 +84,7 @@ public class BasicFunctionsUtils {
 			waitUntilLoadComplete();
 		}
 	}
-	
+
 	public void updateIfDataPresent(WebElement element, String value) {
 		if (value != null) {
 			waitUntilElementToBeClicked(element);
@@ -161,12 +162,21 @@ public class BasicFunctionsUtils {
 			return false;
 		}
 	}
-	
+
 	public void uniqueProductName(String name) {
-        // Generate a unique suffix using the current date and time
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());  
-        // Concatenate the original name with the timestamp
-        itemUniqueName = name + "_" + timestamp;
-    }
+		// Generate a unique suffix using the current date and time
+		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		// Concatenate the original name with the timestamp
+		itemUniqueName = name + "_" + timestamp;
+	}
+
+	public void scrollToElement(WebElement element) {
+		if (driver instanceof JavascriptExecutor) {
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+		} else {
+			throw new IllegalStateException("This driver does not support JavaScript execution.");
+		}
+		waitUntilLoadComplete();
+	}
 
 }

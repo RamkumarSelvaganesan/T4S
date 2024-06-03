@@ -68,10 +68,11 @@ public class ExcelDataReader {
 			}
 			// System.out.println("map
 			// key"+excelSheet.getRow(0).getCell(i).getStringCellValue());
-			if(cellData != null) {
-				if(!(cellData.isEmpty()|| cellData.isBlank())) {
-			dataMap.put(excelSheet.getRow(0).getCell(i).getStringCellValue(), cellData);
-			}}
+			if (cellData != null) {
+				if (!(cellData.isEmpty() || cellData.isBlank())) {
+					dataMap.put(excelSheet.getRow(0).getCell(i).getStringCellValue(), cellData);
+				}
+			}
 		}
 		return dataMap;
 	}

@@ -1,6 +1,5 @@
 package com.TOS.Stepdefinition.Products;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
@@ -61,7 +60,7 @@ public class ProductSteps {
 
 	@When("search for product name {string}")
 	public void search_for_product_name(String string) {
-		
+
 		productPage.searchProduct(string);
 	}
 
@@ -78,8 +77,8 @@ public class ProductSteps {
 	@When("verify added {string} should display in the product table with proper details")
 	public void verify_added_should_display_in_the_product_table_with_proper_details(String productName)
 			throws InterruptedException {
-		if(BasicFunctionsUtils.itemUniqueName!=null) {
-			productName=BasicFunctionsUtils.itemUniqueName;
+		if (BasicFunctionsUtils.itemUniqueName != null) {
+			productName = BasicFunctionsUtils.itemUniqueName;
 		}
 		productPage.validateProductDetailsDisplayInTable(productName);
 
