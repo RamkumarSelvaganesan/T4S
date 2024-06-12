@@ -27,6 +27,7 @@ public class DriverManager {
 
 			switch (BrowserList.valueOf(browser.toUpperCase())) {
 			case CHROME:
+				System.setProperty("webdriver.chrome.driver", "C:\\Users\\v-NandaniNisha\\Selenium\\chromedriver.exe");
 				driver = new ChromeDriver(setupChromeOptions());
 				break;
 			case FIREFOX:
@@ -55,6 +56,7 @@ public class DriverManager {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", downloadFolder);
 		options.setExperimentalOption("prefs", prefs);
+		options.addArguments("--remote-allow-origins=*");
 		return options;
 	}
 

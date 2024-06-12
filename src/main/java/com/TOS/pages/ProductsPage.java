@@ -73,17 +73,17 @@ public class ProductsPage extends BasicFunctionsUtils {
 		click(productPageLocators.getProductProfileButton(iconName));
 	}
 
-	public void selectOnBehalfOf(String behalfName) {
-		if (productDetails.get(behalfName) != null) {
-			type(productPageLocators.onBehalfOf, productDetails.get(behalfName));
-			pressEnter(productPageLocators.onBehalfOf);
+	public void goToRequiredFieldsPage() {
+		if (!(isElementVisible(productPageLocators.previousButton)
+				&& (isElementVisible(productPageLocators.productName)))) {
 			click(productPageLocators.nextButton);
 		}
 	}
 
-	public void goToRequiredFieldsPage() {
-		if (!(isElementVisible(productPageLocators.previousButton)
-				&& (isElementVisible(productPageLocators.productName)))) {
+	public void selectOnBehalfOf(String behalfName) {
+		if (productDetails.get(behalfName) != null) {
+			type(productPageLocators.onBehalfOf, productDetails.get(behalfName));
+			pressEnter(productPageLocators.onBehalfOf);
 			click(productPageLocators.nextButton);
 		}
 	}
