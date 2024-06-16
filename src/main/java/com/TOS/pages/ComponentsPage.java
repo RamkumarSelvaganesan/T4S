@@ -101,4 +101,9 @@ public class ComponentsPage extends BasicFunctionsUtils {
 		return displayRowData;
 	}
 
+	public void clickOnDeleteIcon() {
+		click(componentsPageLocator.deleteIcon);
+		productsPage.clickOnIcon("OK");
+	}
+
 }

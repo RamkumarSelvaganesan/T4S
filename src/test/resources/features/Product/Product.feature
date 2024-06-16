@@ -60,5 +60,22 @@ Feature: Product Categories
   And user clicks on the submit button
   Then validate the Product details table "Active" column has a value "Active"
   
+  @newlyAddedOnJun16
+  Scenario: Verify that user can link material for the product
+		When user clicks on "Products" Tab
+		And Get product details from "<TestCaseNo>"
+		When search for product name "ProductName"
+		And search for company "OnBehalfOf"
+		And user opens the Product details for "ProductName"
+		When user clicks on "Materials" icon
+		And user clicks on "Link Material" icon
+		And user clicks on "Add Item" icon
+		And user adds item details
+		And user clicks on the submit button
+		Then the Material should be added successfully message display
+  Examples:
+	| TestCaseNo |
+	| TC3 |
+	
 	
 		

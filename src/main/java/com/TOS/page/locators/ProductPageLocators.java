@@ -146,4 +146,8 @@ public class ProductPageLocators {
 		return driver.findElement(By.xpath("//div[@title='" + optionName + "']"));
 	}
 
+	public WebElement getAddLinkMaterialElement(String name) {
+		return driver.findElement(By.xpath("//input[contains(@id,'" + name + "')][last()]"));
+	}
+
 }

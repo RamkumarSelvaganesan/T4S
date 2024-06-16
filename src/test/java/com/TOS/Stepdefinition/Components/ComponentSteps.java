@@ -65,4 +65,10 @@ public class ComponentSteps {
 	public void user_should_be_able_to_add_breakdown_with_details() {
 		componentsPage.verifyAddedBreakdown();
 	}
+
+	@When("user delete the breakdown details")
+	public void user_delete_the_breakdown_details() {
+		componentsPage.clickOnDeleteIcon();
+	}
+
 }
