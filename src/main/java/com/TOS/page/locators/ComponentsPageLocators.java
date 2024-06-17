@@ -43,4 +43,6 @@ public class ComponentsPageLocators {
 	@FindBy(xpath = "//thead//th")
 	public List<WebElement> tableHeaders;
 
+	@FindBy(xpath = "//span[@aria-label='delete']")
+	public WebElement deleteIcon;
 }

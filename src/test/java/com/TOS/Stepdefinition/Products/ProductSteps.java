@@ -150,4 +150,14 @@ public class ProductSteps {
 
 	}
 
+	@When("user adds item details")
+	public void user_adds_item_details() {
+		productPage.addLinkMaterialDetails();
+	}
+
+	@Then("the Material should be added successfully message display")
+	public void the_material_should_be_added_successfully_message_display() {
+		productPage.validatePOPMessage("Need to add Title", "Need to add discription");
+	}
+
 }

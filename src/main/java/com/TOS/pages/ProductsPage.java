@@ -1,12 +1,14 @@
 package com.TOS.pages;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -70,7 +72,14 @@ public class ProductsPage extends BasicFunctionsUtils {
 	}
 
 	public void clickOnIcon(String iconName) {
-		click(productPageLocators.getProductProfileButton(iconName));
+		try {
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			click(productPageLocators.getProductProfileButton(iconName));
+		} catch (NoSuchElementException e) {
+			click(driver.findElement(By.xpath("//*[text()='" + iconName + "']")));
+		} finally {
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		}
 	}
 
 	public void selectOnBehalfOf(String behalfName) {
@@ -327,5 +336,14 @@ public class ProductsPage extends BasicFunctionsUtils {
 					expectedValue + " is not present in the  filtered results: " + inputs);
 		}
 		sa.assertAll();
+	}
+
+	public void addLinkMaterialDetails() {
+		type(productPageLocators.getAddLinkMaterialElement("material"), productDetails.get("LM-MaterialName"));
+		pressEnter(productPageLocators.getAddLinkMaterialElement("material"));
+		type(productPageLocators.getAddLinkMaterialElement("consumption"), productDetails.get("LM-Wastage"));
+		type(productPageLocators.getAddLinkMaterialElement("unit"), productDetails.get("LM-Unit"));
+		pressEnter(productPageLocators.getAddLinkMaterialElement("unit"));
+		type(productPageLocators.getAddLinkMaterialElement("weight"), productDetails.get("LM-Weight"));
 	}
 }
