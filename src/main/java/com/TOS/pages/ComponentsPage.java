@@ -35,7 +35,7 @@ public class ComponentsPage extends BasicFunctionsUtils {
 		try {
 			componentTestData = ExcelDataReader.getData(testCaseId);
 			// we reusing many component from Product page. so we need to pass the testdata
-			productsPage.productDetails = componentTestData;
+			productsPage.excelDetails = componentTestData;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

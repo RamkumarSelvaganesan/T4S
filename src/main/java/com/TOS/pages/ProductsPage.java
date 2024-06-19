@@ -24,7 +24,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 
 	public WebDriver driver;
 	ProductPageLocators productPageLocators;
-	public static Map<String, String> productDetails;
+	public static Map<String, String> excelDetails;
 	Map<String, String> displayProductDetailsInUI;
 	Map<String, String> displayProductProfileDetails;
 	Map<String, String> expectedMap;
@@ -38,7 +38,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 		pageManager = new PageObjectManager(driver);
 		this.productPageLocators = new ProductPageLocators(driver);
 		PageFactory.initElements(driver, this.productPageLocators);
-		productDetails = new HashMap<>();
+		excelDetails = new HashMap<>();
 		displayProductDetailsInUI = new HashMap<>();
 		displayProductProfileDetails = new HashMap<>();
 		tableHeaderWithIndex = new HashMap<>();
@@ -48,7 +48,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 
 	public void getProductDetails(String testCaseId) {
 		try {
-			productDetails = ExcelDataReader.getData(testCaseId);
+			excelDetails = ExcelDataReader.getData(testCaseId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,8 +83,8 @@ public class ProductsPage extends BasicFunctionsUtils {
 	}
 
 	public void selectOnBehalfOf(String behalfName) {
-		if (productDetails.get(behalfName) != null) {
-			type(productPageLocators.onBehalfOf, productDetails.get(behalfName));
+		if (excelDetails.get(behalfName) != null) {
+			type(productPageLocators.onBehalfOf, excelDetails.get(behalfName));
 			pressEnter(productPageLocators.onBehalfOf);
 			click(productPageLocators.nextButton);
 		}
@@ -102,29 +102,29 @@ public class ProductsPage extends BasicFunctionsUtils {
 	}
 
 	public void fillRequiredFields() {
-		uniqueProductName(productDetails.get("ProductName"));
+		uniqueProductName(excelDetails.get("ProductName"));
 		type(productPageLocators.productName, itemUniqueName);
-		type(productPageLocators.unitCost, productDetails.get("Cost"));
-		type(productPageLocators.category, productDetails.get("Category"));
+		type(productPageLocators.unitCost, excelDetails.get("Cost"));
+		type(productPageLocators.category, excelDetails.get("Category"));
 		pressEnter(productPageLocators.category);
-		type(productPageLocators.subCategory, productDetails.get("SubCategory"));
+		type(productPageLocators.subCategory, excelDetails.get("SubCategory"));
 		pressEnter(productPageLocators.subCategory);
-		type(productPageLocators.quantity, productDetails.get("Quantity"));
+		type(productPageLocators.quantity, excelDetails.get("Quantity"));
 		pressEnter(productPageLocators.quantity);
-		type(productPageLocators.measureValue, productDetails.get("MeasureValue"));
+		type(productPageLocators.measureValue, excelDetails.get("MeasureValue"));
 		click(productPageLocators.nextButton);
 	}
 
 	public void fillOptionFields() {
-		setActiveRadioButton(productPageLocators.active, productDetails.get("Active"));
-		typeIfDataPresent(productPageLocators.weight, productDetails.get("Weight"));
-		typeIfDataPresent(productPageLocators.colorCode, productDetails.get("ColorCode"));
-		typeIfDataPresent(productPageLocators.lfItemNo, productDetails.get("LF"));
-		typeIfDataPresent(productPageLocators.hsCode, productDetails.get("HSCode"));
-		typeIfDataPresent(productPageLocators.sku, productDetails.get("SKU"));
-		typeIfDataPresent(productPageLocators.upc, productDetails.get("UPC"));
-		typeIfDataPresent(productPageLocators.refNo, productDetails.get("RefNo"));
-		typeIfDataPresent(productPageLocators.collection, productDetails.get("Collection"));
+		setActiveRadioButton(productPageLocators.active, excelDetails.get("Active"));
+		typeIfDataPresent(productPageLocators.weight, excelDetails.get("Weight"));
+		typeIfDataPresent(productPageLocators.colorCode, excelDetails.get("ColorCode"));
+		typeIfDataPresent(productPageLocators.lfItemNo, excelDetails.get("LF"));
+		typeIfDataPresent(productPageLocators.hsCode, excelDetails.get("HSCode"));
+		typeIfDataPresent(productPageLocators.sku, excelDetails.get("SKU"));
+		typeIfDataPresent(productPageLocators.upc, excelDetails.get("UPC"));
+		typeIfDataPresent(productPageLocators.refNo, excelDetails.get("RefNo"));
+		typeIfDataPresent(productPageLocators.collection, excelDetails.get("Collection"));
 	}
 
 	public void upload(String fileType) {
@@ -135,8 +135,8 @@ public class ProductsPage extends BasicFunctionsUtils {
 			uploadFileLocation = System.getProperty("user.dir") + File.separator + "Downloads" + File.separator
 					+ fileType;
 		}
-		if (productDetails.get("UploadFileLocation") != null) {
-			uploadFileLocation = productDetails.get("UploadFileLocation");
+		if (excelDetails.get("UploadFileLocation") != null) {
+			uploadFileLocation = excelDetails.get("UploadFileLocation");
 		}
 		upload(productPageLocators.uploadButton, uploadFileLocation);
 		try {
@@ -160,17 +160,17 @@ public class ProductsPage extends BasicFunctionsUtils {
 		if (BasicFunctionsUtils.itemUniqueName != null) {
 			productName = BasicFunctionsUtils.itemUniqueName;
 		} else {
-			productName = productDetails.get(productName);
+			productName = excelDetails.get(productName);
 		}
 		type(productPageLocators.searchProduct, productName);
 	}
 
 	public void searchForCompany(String companyName) {
-		if (productDetails.get(companyName) != null) {
+		if (excelDetails.get(companyName) != null) {
 			click(productPageLocators.forCompany);
 			WebElement companyOption = driver
 					.findElement(By.xpath("//div[@class='ant-select-item-option-content' and contains(text(),'"
-							+ productDetails.get(companyName) + "')]"));
+							+ excelDetails.get(companyName) + "')]"));
 			click(companyOption);
 		}
 	}
@@ -195,7 +195,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 		if (BasicFunctionsUtils.itemUniqueName != null) {
 			productName = BasicFunctionsUtils.itemUniqueName;
 		} else {
-			productName = productDetails.get(productName);
+			productName = excelDetails.get(productName);
 		}
 		List<WebElement> tableDataForProduct = driver
 				.findElements(By.xpath("//a[text()='" + productName + "']/ancestor::tr/td"));
@@ -267,7 +267,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 	}
 
 	public void compareMapValues(String testDataKeyName, String uiKeyName, String messageNote) {
-		String testData = productDetails.get(testDataKeyName);
+		String testData = excelDetails.get(testDataKeyName);
 		sa.assertEquals(testData, expectedMap.get(uiKeyName), messageNote);
 	}
 
@@ -279,7 +279,7 @@ public class ProductsPage extends BasicFunctionsUtils {
 		if (BasicFunctionsUtils.itemUniqueName != null) {
 			productName = BasicFunctionsUtils.itemUniqueName;
 		} else {
-			productName = productDetails.get(productName);
+			productName = excelDetails.get(productName);
 		}
 		click(productPageLocators.getProductHyperLine(productName));
 	}
@@ -289,12 +289,12 @@ public class ProductsPage extends BasicFunctionsUtils {
 	}
 
 	public void editsProductDetails() {
-		updateIfDataPresent(productPageLocators.weight, productDetails.get("EditWeight"));
-		updateIfDataPresent(productPageLocators.unitCost, productDetails.get("EditItemcost"));
-		updateIfDataPresent(productPageLocators.sku, productDetails.get("EditSku"));
-		updateIfDataPresent(productPageLocators.collection, productDetails.get("EditSeason"));
-		updateIfDataPresent(productPageLocators.remark, productDetails.get("EditRemarks"));
-		updateIfDataPresent(productPageLocators.tags, productDetails.get("EditTags"));
+		updateIfDataPresent(productPageLocators.weight, excelDetails.get("EditWeight"));
+		updateIfDataPresent(productPageLocators.unitCost, excelDetails.get("EditItemcost"));
+		updateIfDataPresent(productPageLocators.sku, excelDetails.get("EditSku"));
+		updateIfDataPresent(productPageLocators.collection, excelDetails.get("EditSeason"));
+		updateIfDataPresent(productPageLocators.remark, excelDetails.get("EditRemarks"));
+		updateIfDataPresent(productPageLocators.tags, excelDetails.get("EditTags"));
 
 	}
 
@@ -339,11 +339,11 @@ public class ProductsPage extends BasicFunctionsUtils {
 	}
 
 	public void addLinkMaterialDetails() {
-		type(productPageLocators.getAddLinkMaterialElement("material"), productDetails.get("LM-MaterialName"));
+		type(productPageLocators.getAddLinkMaterialElement("material"), excelDetails.get("LM-MaterialName"));
 		pressEnter(productPageLocators.getAddLinkMaterialElement("material"));
-		type(productPageLocators.getAddLinkMaterialElement("consumption"), productDetails.get("LM-Wastage"));
-		type(productPageLocators.getAddLinkMaterialElement("unit"), productDetails.get("LM-Unit"));
+		type(productPageLocators.getAddLinkMaterialElement("consumption"), excelDetails.get("LM-Wastage"));
+		type(productPageLocators.getAddLinkMaterialElement("unit"), excelDetails.get("LM-Unit"));
 		pressEnter(productPageLocators.getAddLinkMaterialElement("unit"));
-		type(productPageLocators.getAddLinkMaterialElement("weight"), productDetails.get("LM-Weight"));
+		type(productPageLocators.getAddLinkMaterialElement("weight"), excelDetails.get("LM-Weight"));
 	}
 }

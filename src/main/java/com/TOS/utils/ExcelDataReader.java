@@ -108,7 +108,7 @@ public class ExcelDataReader {
 	}
 
 	public static void main(String[] args) throws Exception {
-		sheetName = "Product";
+		sheetName = "DocumentRulesets";
 		System.out.println(getData("TC2"));
 	}
 
