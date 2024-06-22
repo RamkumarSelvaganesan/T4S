@@ -79,7 +79,7 @@ public class BasicFunctionsUtils {
 
 	public void typeIfDataPresent(WebElement element, String value) {
 		if (value != null) {
-			waitUntilElementToBeClicked(element);
+			// waitUntilElementToBeClicked(element);
 			element.sendKeys(value);
 			waitUntilLoadComplete();
 		}

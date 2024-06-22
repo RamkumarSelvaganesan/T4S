@@ -15,9 +15,13 @@ public class PageObjectManager {
 	public ProductsPage getProductsPage() {
 		return new ProductsPage(driver);
 	}
-	
+
 	public ComponentsPage getComponentsPage() {
 		return new ComponentsPage(driver);
+	}
+
+	public DocumentRulesetsPage getDocumentRulesetsPage() {
+		return new DocumentRulesetsPage(driver);
 	}
 
 }
